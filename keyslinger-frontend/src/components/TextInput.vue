@@ -1,15 +1,20 @@
 <template>
-  <div class="textinput">
-    <div class="items">
-      <token
-        v-for="(token, index) in tokens"
-        :key="index"
-        :token="token"
-        :class="[
-          currentIndex === index ? ['cursor', 'cursor--blinking'] : '',
-          token.status ? `token--${token.status}` : '',
-        ]"
-      />
+  <div>
+    <div class="textinput">
+      <div class="items">
+        <token
+          v-for="(token, index) in tokens"
+          :key="index"
+          :token="token"
+          :class="[
+            currentIndex === index ? ['cursor', 'cursor--blinking'] : '',
+            token.status ? `token--${token.status}` : '',
+          ]"
+        />
+      </div>
+    </div>
+    <div class="actions">
+      <button @click="reset">Reset</button>
     </div>
   </div>
 </template>
@@ -87,6 +92,22 @@ export default {
         console.log("Done!");
       }
     },
+    reset: function() {
+      this.$store.dispatch('deactivate')
+      this.$store.dispatch("unComplete");
+      this.$store.dispatch('resetIndex')
+      this.$store.dispatch('resetErrors')
+      this.$store.dispatch('resetAmountTyped')
+      this.tokens.forEach( (token, index) => {
+        this.$store.dispatch("setTokenStatus", {
+            index: index,
+            status: null,
+        })
+      });
+      clearInterval(this.timer);
+      this.$store.dispatch('resetSeconds')
+      console.log("Reset!");
+    }
   },
   beforeUnmount: function() {
     clearInterval(this.timer); // in case of emergency?
@@ -107,5 +128,15 @@ export default {
   color: #27253e;
   border-top: 1px solid grey;
   border-bottom: 1px solid grey;
+
 }
+
+.actions {
+  display: flex;
+  justify-content: center;
+
+  padding: 2em;
+
+}
+
 </style>
