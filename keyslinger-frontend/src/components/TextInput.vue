@@ -84,7 +84,7 @@ export default {
         this.$store.dispatch("deactivate");
         this.$store.dispatch("complete");
         clearInterval(this.timer);
-        alert("Done!");
+        console.log("Done!");
       }
     },
   },
