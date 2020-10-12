@@ -1,6 +1,7 @@
 # %%
 from random import choice
 import re
+import json
 
 LENGTH = 5
 FORBIDDEN = "ç ̃ ́"
@@ -44,8 +45,8 @@ def extract2():
 
 all_characters = extract2()
 
-with open("character_dump.txt", "w") as f:
-    f.write(all_characters)
+with open("character_dump.json", "w") as f:
+    json.dump({'text': all_characters}, f)
 
 
 # %%
