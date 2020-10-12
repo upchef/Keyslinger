@@ -20,61 +20,61 @@
 </template>
 
 <script>
-import TextInput from "./components/TextInput";
+import TextInput from './components/TextInput'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     TextInput,
   },
   computed: {
     tokens: function() {
-      return this.$store.state.tokens;
+      return this.$store.state.tokens
     },
     seconds: function() {
-      return this.$store.state.seconds;
+      return this.$store.state.seconds
     },
     amountTyped: function() {
-      return this.$store.state.amountTyped;
+      return this.$store.state.amountTyped
     },
     amountUncorrectedErrors: function() {
       return this.tokens.reduce(
-        (total, { status }) => (status === "error" ? total + 1 : total),
+        (total, { status }) => (status === 'error' ? total + 1 : total),
         0
-      );
+      )
     },
     typingSpeed: function() {
-      let wordsTyped = (this.amountTyped - this.amountUncorrectedErrors) / 5;
-      let minutes = this.seconds / 60;
-      let netWPM = Math.round(wordsTyped / minutes);
-      netWPM = (isFinite(netWPM) && netWPM) || 0;
-      return netWPM;
+      let wordsTyped = (this.amountTyped - this.amountUncorrectedErrors) / 5
+      let minutes = this.seconds / 60
+      let netWPM = Math.round(wordsTyped / minutes)
+      netWPM = (isFinite(netWPM) && netWPM) || 0
+      return netWPM
     },
 
     totalErrors: function() {
-      return this.$store.state.totalErrors;
+      return this.$store.state.totalErrors
     },
   },
   mounted: async function() {
-    const json = await import("./assets/character_dump.json");
+    const json = await import('./assets/character_dump.json')
     this.$store.commit(
-      "setTokens",
+      'setTokens',
       json.default.text
         .slice(0, 30)
         .toLowerCase()
         .trim()
-    );
+    )
   },
-};
+}
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
 
 main {
   margin: 0 auto;
   width: 75%;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .dashboard {
