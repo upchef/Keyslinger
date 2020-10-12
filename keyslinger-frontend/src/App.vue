@@ -56,14 +56,89 @@ export default {
     },
   },
   mounted: async function() {
-    const json = await import('./assets/character_dump.json')
-    this.$store.commit(
-      'setTokens',
-      json.default.text
-        .slice(0, 30)
-        .toLowerCase()
-        .trim()
-    )
+    const json = await import("./assets/character_dump.json");
+    const LOWER_CASE = "eaonirsldtcumpgbyvfhqzjkñwx ";
+    // const UPPER_CASE = "ECASLMPBTDRFIGNHJVUOKWQXYZ";
+    const NUMBERS = "1025938476";
+    const ACCENTS = "óíáéúü";
+    const SYMBOLS1 = ",.";
+    const SYMBOLS2 = '/=)(:-?;"!';
+    const SYMBOLS3 = "%+*#_¿¡<>[]{}&";
+
+    const VOCALS = "oiaeuu";
+    const LENGTH = 5;
+    const text = json.default.text;
+    let newText = "";
+    for (let i = 0; i < text.length; i++) {
+      let character = text[i];
+      // Remove numbers and symbols
+      if (NUMBERS.includes(character)) {
+        continue;
+      }
+      if (SYMBOLS1.includes(character)) {
+        continue;
+      }
+      if (SYMBOLS2.includes(character)) {
+        continue;
+      }
+      if (SYMBOLS3.includes(character)) {
+        continue;
+      }
+      // Remove accents
+      for (let i = 0; i < ACCENTS.length; i++) {
+        const c = ACCENTS[i];
+        if (c === character) {
+          character = VOCALS[i];
+        }
+      }
+      // Remove weird symbols
+      if (!LOWER_CASE.includes(character.toLowerCase())) {
+        continue;
+      }
+      newText += character;
+    }
+    // Get sequences
+    const sequences = new Set();
+    let buffer = "";
+    for (let i = 0; i < newText.length; i++) {
+      const character = newText[i];
+      buffer += character;
+      if (buffer.length > LENGTH) {
+        buffer = buffer.substring(1);
+      }
+      if (buffer.length == LENGTH) {
+        sequences.add(buffer);
+      }
+    }
+    const arraySequences = Array.from(sequences);
+
+    // Make predictor
+    const predictor = {};
+    for (let i = 0; i < arraySequences.length; i++) {
+      const seq = arraySequences[i];
+      const pre = seq.slice(0, -1);
+      if (predictor[pre] === undefined) {
+        predictor[pre] = new Set();
+      }
+      predictor[pre].add(seq.slice(-1));
+    }
+    // Use arrays again
+    for (pre in predictor) {
+      predictor[pre] = Array.from(predictor[pre]);
+    }
+
+    // Generate sequence
+    const keys = Object.keys(predictor);
+    const presNumber = keys.length;
+    const start = keys[(presNumber * Math.random()) << 0];
+
+    let pre = start;
+    let sequence = pre;
+    for (let _ = 0; _ < 100; _++) {
+      sequence += predictor[pre][(predictor[pre].length * Math.random()) << 0];
+      pre = sequence.slice(1).slice(-LENGTH + 1); // get last LENGTH-1 characters
+    }
+    this.$store.commit("setTokens", sequence.toLowerCase().trim());
   },
 }
 </script>
