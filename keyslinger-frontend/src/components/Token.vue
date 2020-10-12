@@ -1,16 +1,15 @@
 <template>
-    <span class="token">{{ token.char }}</span>    
+  <span class="token">{{ token.char }}</span>
 </template>
 
 <script>
 export default {
-    name: 'token',
-    props: ['token']
+  name: 'token',
+  props: ['token'],
 }
 </script>
 
 <style scoped>
-
 .token {
   /* display: inline-block;s */
   margin-right: 2px;
@@ -46,5 +45,4 @@ export default {
     background: transparent;
   }
 }
-
 </style>

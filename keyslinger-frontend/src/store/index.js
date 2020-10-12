@@ -1,4 +1,4 @@
-import { createStore } from "vuex";
+import { createStore } from 'vuex'
 
 let state = {
   active: false,
@@ -14,82 +14,106 @@ let state = {
     //   status: null
     // },
   ],
-};
+}
 
 let mutations = {
   setTokens: function(state, string) {
-    state.tokens = [...string].map((s) => ({ char: s, key: s, status: null }));
+    state.tokens = [...string].map(s => ({ char: s, key: s, status: null }))
+  },
+  resetIndex: function(state) {
+    state.currentIndex = 0
   },
   incrementIndex: function(state) {
-    state.currentIndex++;
+    state.currentIndex++
   },
   decrementIndex: function(state) {
-    state.currentIndex = Math.max(0, state.currentIndex - 1);
+    state.currentIndex = Math.max(0, state.currentIndex - 1)
   },
   setTokenStatus: function(state, { index, status }) {
-    state.tokens[index].status = status;
+    state.tokens[index].status = status
   },
   activate: function(state) {
-    state.active = true;
+    state.active = true
   },
   deactivate: function(state) {
-    state.active = false;
+    state.active = false
   },
   complete: function(state) {
-    state.completed = true;
+    state.completed = true
+  },
+  unComplete: function(state) {
+    state.completed = false
   },
   incrementTyped: function(state) {
-    state.amountTyped++;
+    state.amountTyped++
   },
   decrementTyped: function(state) {
-    state.amountTyped--;
+    state.amountTyped--
+  },
+  resetAmountTyped: function(state) {
+    state.amountTyped = 0
   },
   incrementErrors: function(state) {
-    state.totalErrors++;
+    state.totalErrors++
+  },
+  resetErrors: function(state) {
+    state.totalErrors = 0
   },
   addSecond: function(state) {
-    state.seconds++;
+    state.seconds++
   },
-  subtractSecond: function(state) {
-    state.seconds--;
+  resetSeconds: function(state) {
+    state.seconds = 0
   },
-};
+}
 
 let actions = {
   incrementIndex: function(context) {
-    context.commit("incrementIndex");
+    context.commit('incrementIndex')
   },
   decrementIndex: function(context) {
-    context.commit("decrementIndex");
+    context.commit('decrementIndex')
+  },
+  resetIndex: function(context) {
+    context.commit('resetIndex')
   },
   setTokenStatus: function(context, { index, status }) {
-    context.commit("setTokenStatus", { index, status });
+    context.commit('setTokenStatus', { index, status })
   },
   activate: function(context) {
-    context.commit("activate");
+    context.commit('activate')
   },
   deactivate: function(context) {
-    context.commit("deactivate");
+    context.commit('deactivate')
   },
   complete: function(context) {
-    context.commit("complete");
+    context.commit('complete')
+  },
+  unComplete: function(context) {
+    context.commit('unComplete')
   },
   incrementTyped: function(context) {
-    context.commit("incrementTyped");
+    context.commit('incrementTyped')
   },
   decrementTyped: function(context) {
-    context.commit("decrementTyped");
+    context.commit('decrementTyped')
+  },
+  resetAmountTyped: function(context) {
+    context.commit('resetAmountTyped')
   },
   incrementErrors: function(context) {
-    context.commit("incrementErrors");
+    context.commit('incrementErrors')
+  },
+  resetErrors: function(context) {
+    context.commit('resetErrors')
   },
   addSecond: function(context) {
-    context.commit("addSecond");
+    context.commit('addSecond')
   },
-  subtractSecond: function(context) {
-    context.commit("subtractSecond");
+  resetSeconds: function(context) {
+    context.commit('resetSeconds')
   },
-};
+}
 
 // let getters = {}
 
@@ -97,4 +121,4 @@ export default createStore({
   state,
   mutations,
   actions,
-});
+})
