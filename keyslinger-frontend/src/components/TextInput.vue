@@ -3,7 +3,7 @@
     <div class="textinput">
       <div class="items">
         <token
-          v-for="(token, index) in tokens"
+          v-for="(token, index) in displayTokens"
           :key="index"
           :token="token"
           :class="[
@@ -30,6 +30,10 @@ export default {
   data: function() {
     return {
       timer: null,
+      specialChars: {
+        '\n': '↩',
+        ' ': '␣',
+      },
     }
   },
   created: function() {
@@ -38,6 +42,13 @@ export default {
   computed: {
     tokens: function() {
       return this.$store.state.tokens
+    },
+    displayTokens: function() {
+      let displayTokens = this.tokens.map(token => {
+        token.char = this.specialChars[token.key] || token.key
+        return token
+      })
+      return displayTokens
     },
     active: function() {
       return this.$store.state.active
@@ -128,6 +139,7 @@ export default {
   color: #27253e;
   border-top: 1px solid grey;
   border-bottom: 1px solid grey;
+  overflow-wrap: break-word;
 }
 
 .actions {
