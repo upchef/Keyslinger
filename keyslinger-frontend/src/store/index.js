@@ -18,7 +18,7 @@ let state = {
 
 let mutations = {
   setTokens: function(state, string) {
-    state.tokens = [...string].map(s => ({ char: s, key: s, status: null }))
+    state.tokens = [...string].map(s => ({ key: s, status: null }))
   },
   resetIndex: function(state) {
     state.currentIndex = 0
